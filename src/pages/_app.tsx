@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import Layout from '@interfaces/components/Layout'
+import Layout from 'src/pages/components/Layout'
 import '@interfaces/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

@@ -12,7 +12,18 @@ const config: Config = {
         sans: ['"League Spartan"', 'sans-serif'],
         schoolbell: ['"Schoolbell"', 'cursive'],
       },
+      backgroundImage: {
+        'cloud-white': 'url("/cloud-header.png")',
+        'cloud-blue': 'url("/bg-cloud-blue.jpg")',
+      }
     },
+    colors: {
+      'white': '#FFF',
+      'black': '#000',
+      'baby-blue': '#81CAEA',
+      'baby-yellow': '#FBD87C', 
+      'baby-cyan': '#D2FFFE',
+    }
   },
   plugins: [],
 };

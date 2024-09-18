@@ -1,4 +1,4 @@
-import SubPageTitle from "@interfaces/components/SubPageTitle";
+import SubPageTitle from "src/pages/components/SubPageTitle";
 
 export default function Testimonials() {
     return (

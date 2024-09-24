@@ -5,4 +5,5 @@ export interface ContactRepository {
     findByEmail(email: string): Promise<Contact[] | null>;
     save(contact: Contact): Promise<void>;
     delete(id: string): Promise<void>;
+    getAll(): Promise<Contact[]>;
 }

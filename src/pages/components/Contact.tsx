@@ -109,8 +109,8 @@ export default function Contact() {
             {/* Notification section */}
             {response && (
                 <div
-                    className={`fixed z-50 top-0 p-5 m-3 rounded-xl text-white ${
-                        isError ? "bg-baby-yellow" : "bg-baby-blue"
+                    className={`fixed z-50 top-0 p-5 m-3 rounded-xl ${
+                        isError ? "bg-baby-yellow text-white" : "bg-baby-cyan text-black"
                     }`}
                 >
                     {response}

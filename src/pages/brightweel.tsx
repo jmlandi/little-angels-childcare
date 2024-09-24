@@ -1,6 +1,6 @@
 import Maintenance from "./components/Maintenance";
 
-export default function Closures() {
+export default function BrightWeel() {
     return (
         <Maintenance />
     );

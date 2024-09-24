@@ -6,8 +6,8 @@ export class ContactRepositoryImpl implements ContactRepository {
     
     async save(contact: Contact): Promise<void> {
         await pool.query(
-            "INSERT INTO contacts (id, phone, email, message, created_at) VALUES ($1, $2, $3, $4, $5)",
-            [contact.getId, contact.getPhone, contact.getEmail, contact.getMessage, contact.getCreatedAt]
+            "INSERT INTO contacts (id, name, email, message, created_at) VALUES ($1, $2, $3, $4, $5)",
+            [contact.getId(), contact.getName(), contact.getEmail(), contact.getMessage(), contact.getCreatedAt()]
         );
     }
 
@@ -20,7 +20,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         if (rows.length === 0) return null;
         const contactRecord = rows[0];
         return new Contact(
-            contactRecord.phone,
+            contactRecord.name,
             contactRecord.email,
             contactRecord.message,
             contactRecord.id,
@@ -38,8 +38,8 @@ export class ContactRepositoryImpl implements ContactRepository {
         return contactList;
     }
 
-    async findByPhone(phone: string): Promise<Contact[] | null> {
-        const { rows } = await pool.query("SELECT * FROM contacts WHERE email = $1", [phone]);
+    async findByName(name: string): Promise<Contact[] | null> {
+        const { rows } = await pool.query("SELECT * FROM contacts WHERE email = $1", [name]);
         if (rows.length === 0) return null;
         let contactList: Contact[] = [];
         for (let i = 0; i < rows.length; i++) {

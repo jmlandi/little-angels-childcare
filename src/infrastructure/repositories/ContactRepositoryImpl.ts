@@ -11,6 +11,11 @@ export class ContactRepositoryImpl implements ContactRepository {
         );
     }
 
+    async getAll(): Promise<Contact[]> {
+        const { rows } = await pool.query("SELECT * FROM contacts");
+        return rows.map((row) => new Contact(row.name, row.email, row.message, row.id, row.created_at));
+    }
+
     async delete(id: string): Promise<void> {
         await pool.query("DELETE FROM contacts WHERE id = $1", [id]);
     }

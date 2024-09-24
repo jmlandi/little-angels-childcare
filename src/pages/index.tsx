@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useIsVisible } from '../interfaces/hooks/useIsVisible';
 import Link from 'next/link';
 import Head from 'next/head';
+import ModalForm from './components/ModalForm';
 
 export default function Home() {
   const [currentImage, setCurrentImage] = React.useState(0);
@@ -11,6 +12,8 @@ export default function Home() {
     'banner-2.png',
     'banner-3.png'
   ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -44,7 +47,7 @@ export default function Home() {
         console.error('Error fetching testimonials:', error);
         // Set a default testimonial in case of error
         setTestimonials([{
-          text: "We're currently experiencing technical difficulties. Please check back later for our customer testimonials.",
+          text: "We&apos;re currently experiencing technical difficulties. Please check back later for our customer testimonials.",
           author: "Little Angels Team"
         }]);
       }
@@ -74,6 +77,14 @@ export default function Home() {
   const ourMissionRef = useRef(null);
   const ourMissionIsVisible = useIsVisible(ourMissionRef);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <Head>
@@ -93,9 +104,16 @@ export default function Home() {
       >
         <div className="flex flex-col items-center justify-center gap-5 bg-baby-cyan rounded-xl py-10 px-16 md:px-44 mt-24 md:mt-44 opacity-95">
           <h2 className="text-baby-blue text-2xl md:text-4xl font-bold text-center">Welcome to your<br></br>bilingual childcare!</h2>
-          <button className="bg-baby-blue rounded-xl md:text-xl font-schoolbell text-white px-10 py-3 hover:bg-white hover:text-baby-blue transition-all duration-200">SCHEDULE A TOUR</button>
+          <button 
+            onClick={handleOpenModal}
+            className="bg-baby-blue rounded-xl md:text-xl font-schoolbell text-white px-10 py-3 hover:bg-white hover:text-baby-blue transition-all duration-200"
+          >
+            SCHEDULE A TOUR
+          </button>
         </div>
       </main>
+
+      <ModalForm isOpen={isModalOpen} onClose={handleCloseModal} />
 
       {/* Core Values */}
       <section className="flex flex-col items-center justify-start gap-5 p-10 min-h-screen rounded-t-3xl bg-white z-20 mt-[-60px]">
@@ -186,7 +204,7 @@ export default function Home() {
         <div className="flex flex-col items-start justify-center gap-5 md:max-w-[50%]">
           <h2 className="text-baby-blue text-5xl font-bold text-center"><span className="text-baby-yellow">Our</span> Mission</h2>
           <p className="text-justify">
-           We believe that children thrive in an <span className="font-bold">environment which values their own uniqueness</span>, while providing support and opportunities to grow emotionally, socially and creatively. By building on each child's strengths, interests and curiosities, we guide each child to explore the world around them as well as develop new abilities and form close relationships.
+           We believe that children thrive in an <span className="font-bold">environment which values their own uniqueness</span>, while providing support and opportunities to grow emotionally, socially and creatively. By building on each child&apos;s strengths, interests and curiosities, we guide each child to explore the world around them as well as develop new abilities and form close relationships.
           </p>
           <p className="text-justify">
             <span className="font-bold">We are bilingual, and will teach your child a second language.</span> Research shows that learning a second language boosts problem-solving, critical-thinking, and listening skills, in addition to improving memory, concentration, and the ability to multitask. Children proficient in other languages also show signs of enhanced creativity and mental flexibility.

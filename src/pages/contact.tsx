@@ -1,7 +1,7 @@
-import SubPageTitle from "src/pages/components/SubPageTitle";
+import Maintenance from "./components/Maintenance";
 
 export default function Contact() {
     return (
-        <SubPageTitle title="Contact Us"></SubPageTitle>
+        <Maintenance />
     );
 }

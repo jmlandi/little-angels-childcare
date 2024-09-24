@@ -1,7 +1,7 @@
-import SubPageTitle from "src/pages/components/SubPageTitle";
+import Maintenance from "./components/Maintenance";
 
 export default function Gallery() {
     return (
-        <SubPageTitle title="Gallery"></SubPageTitle>
+        <Maintenance />
     );
 }

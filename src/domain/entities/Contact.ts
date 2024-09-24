@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Contact {
     public constructor(
-        private phone: string,
+        private name: string,
         private email: string,
         private message: string,
         private id: string = uuidv4(),
@@ -13,8 +13,8 @@ export class Contact {
         return this.id;
     }
 
-    public getPhone(): string {
-        return this.phone;
+    public getName(): string {
+        return this.name;
     }
 
     public getEmail(): string {

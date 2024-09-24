@@ -10,8 +10,6 @@ COPY . .
 
 RUN npm run build
 
-RUN npm install next react react-dom
-
 FROM node:18-alpine
 
 WORKDIR /app

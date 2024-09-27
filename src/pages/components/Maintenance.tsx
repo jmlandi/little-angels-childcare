@@ -22,7 +22,7 @@ export default function Maintenance() {
                 height={230}
                 alt="Little angel above a cute cloud"
                 />
-                <h2 className="mb-3 animate-pulse font-schoolbell text-5xl text-baby-blue">We&apos;re Under Maintenance!</h2>
+                <h2 className="mb-3 animate-pulse font-schoolbell text-5xl text-baby-blue">This page is temporarily unavailable</h2>
                 <p>We&apos;re working hard to make improvements to our website, but you can still reach us through our official channels or the form below. Thanks for your patience!</p>
             </main>
         </>

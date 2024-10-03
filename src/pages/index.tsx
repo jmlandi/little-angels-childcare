@@ -98,11 +98,8 @@ export default function Home() {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       {/* Banner */}
-      <main
-        className="flex flex-col items-center justify-start min-h-screen gap-5 bg-cover bg-center transition-all duration-1000 ease-in-out z-10"
-        style={{ backgroundImage: `url(${images[currentImage]})` }}
-      >
-        <div className="flex flex-col items-center justify-center gap-5 bg-baby-cyan rounded-xl py-10 px-16 md:px-44 mt-24 md:mt-44 opacity-95">
+      <div className="flex md:flex-row flex-col min-h-[80vh] items-center justify-center bg-white z-10 pt-28 md:pt-36">
+        <div className="flex flex-col items-center justify-center w-full md:w-1/2 min-h-[36vh] md:min-h-[80vh] p-5 gap-5 bg-baby-cyan rounded-xl">
           <h2 className="text-baby-blue text-2xl md:text-4xl font-bold text-center">Welcome to your<br></br>bilingual childcare!</h2>
           <button 
             onClick={handleOpenModal}
@@ -111,16 +108,21 @@ export default function Home() {
             SCHEDULE A TOUR
           </button>
         </div>
-      </main>
+        <main
+          className="flex flex-col w-full md:w-1/2 min-h-[40vh] md:min-h-[80vh] items-center justify-start gap-5 bg-cover bg-center transition-all duration-1000 ease-in-out"
+          style={{ backgroundImage: `url(${images[currentImage]})` }}
+        >
+        </main>
+      </div>
 
       <ModalForm isOpen={isModalOpen} onClose={handleCloseModal} />
 
       {/* Core Values */}
       <section className="flex flex-col items-center justify-start gap-5 p-10 min-h-screen rounded-t-3xl bg-white z-20 mt-[-60px]">
-        <div className="flex flex-col items-center justify-start rounded-t-3xl bg-white">
+        <div className="flex flex-col items-center justify-start rounded-t-3xl w-[100vw] p-5 bg-white">
           <div className="flex flex-row items-center justify-start gap-2">
-            <p className="text-baby-yellow text-2xl font-schoolbell">why choose us</p>
-            <Image className="animate-bounce" src="/angel-1.png" alt="why choose us" width={50} height={50} />
+            <p className="text-baby-yellow text-2xl font-schoolbell rounded-t-3xl">why choose us</p>
+            {/*<Image className="animate-bounce" src="/angel-1.png" alt="why choose us" width={50} height={50} />*/}
           </div>
           <h2 className="text-baby-blue text-3xl md:text-5xl font-bold text-center">Our Core Values</h2>
         </div>
@@ -134,7 +136,7 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col items-center justify-start gap-5 rounded-xl bg-baby-cyan border-2 border-baby-blue p-5 h-[480px] w-[270px]">
-              <Image src="/core-value-2.png" alt="why choose us" width={160} height={160} />
+              <Image src="/core-value-2.png" alt="create" width={160} height={160} />
               <h3 className="text-white text-2xl font-bold text-center bg-baby-blue rounded-xl py-2 px-7">create</h3>
               <p className="text-baby-blue text-center text-sm">
                 Creativity is at the heart of everything we do. We provide opportunities for children to express themselves through art, music, and imaginative play, nurturing their creative talents and helping them to think outside the box.
@@ -161,10 +163,23 @@ export default function Home() {
       <section ref={testimonialRef} className="flex flex-col items-center justify-center gap-5 p-16 min-h-[90vh] rounded-3xl bg-baby-blue z-20">
         <div className="flex flex-row items-center justify-center gap-2">
           <h2 className="text-white text-4xl font-bold">Testimonials</h2>
-          <Image className="animate-bounce" src="/angel-3.png" alt="why choose us" width={40} height={40} />
+          {/*<Image className="animate-bounce" src="/angel-3.png" alt="why choose us" width={40} height={40} />*/}
         </div>
         {/*Testimonials Carousel*/}
         <div className="flex flex-row items-center justify-center gap-4 mt-16">
+          <button 
+            onClick={() => {
+              setIsAnimating(true);
+              setTimeout(() => {
+                setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+                setIsAnimating(false);
+              }, 500);
+            }}
+            className="hidden md:block mr-16 text-white text-4xl focus:outline-none hover:text-baby-yellow transition-all duration-200"
+            aria-label="Previous testimonial"
+          >
+            &#8592;
+          </button>
           <div className="flex flex-row items-center justify-center">
             {/*Testimonial*/}
             {testimonials.length > 0 && (
@@ -187,6 +202,19 @@ export default function Home() {
               </div>
             )}
           </div>
+          <button 
+            onClick={() => {
+              setIsAnimating(true);
+              setTimeout(() => {
+                setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+                setIsAnimating(false);
+              }, 500);
+            }}
+            className="hidden md:block ml-16 text-white text-4xl focus:outline-none hover:text-baby-yellow transition-all duration-200"
+            aria-label="Next testimonial"
+          >
+            &#8594;
+          </button>
         </div>
         <Link href="/testimonials">
           <button className="bg-white rounded-xl md:text-xl text-baby-blue px-16 md:px-20 py-3 transition-all duration-200 hover:bg-baby-yellow hover:text-white mt-10">
@@ -198,7 +226,7 @@ export default function Home() {
       {/*Our Misson*/}
       <section
         ref={ourMissionRef}
-        className={`flex flex-col-reverse md:flex-row items-center justify-center gap-10 p-24 min-h-screen rounded-3xl bg-white z-20
+        className={`flex flex-col-reverse md:flex-row items-center justify-center gap-10 md:p-24 p-10 min-h-screen rounded-3xl bg-white z-20
         transition-opacity ease-in duration-1000 ${ourMissionIsVisible ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="flex flex-col items-start justify-center gap-5 md:max-w-[50%]">

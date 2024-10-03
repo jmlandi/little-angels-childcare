@@ -153,7 +153,7 @@ export default function Header() {
           </li>
           <li>
             <Link
-              href="/school-closures"
+              href="/closures"
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
             >
               school closures

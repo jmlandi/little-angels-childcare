@@ -6,7 +6,7 @@ export default function Weekend() {
         <>
             <SubPageTitle title="Weekend" />
             <main className="w-full flex md:flex-row flex-col items-center justify-center gap-15">
-                <Image src="/weekend.jpeg" alt="Weekend Drop-In" width={100} height={100} sizes="%" className="w-1/3 min-w-[330px] rounded-xl" />
+                <Image src="/weekend.JPEG" alt="Weekend Drop-In" width={100} height={100} sizes="%" className="w-1/3 min-w-[330px] rounded-xl" />
                 <div className="m-5 flex flex-col items-center justify-center">
                     <p className="text-xl font-bold mx-5 text-center">Sunday Fundays are from <br></br>10:00 a.m. to 5:00 p.m.</p>
                     <hr className="w-1/3 m-5"/>

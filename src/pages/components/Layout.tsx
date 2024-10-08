@@ -46,6 +46,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Add Head component with favicon link */}
       <Head>
         <link rel="icon" href="/favicon.ico" /> {/* Update the href if your favicon has a different name or path */}
+        {/* Add Google Tag Manager script */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F7FNZKV7J1"></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F7FNZKV7J1');
+          `}
+        </script>
       </Head>
       
       { loading ? (

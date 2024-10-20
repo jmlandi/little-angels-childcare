@@ -1,36 +1,34 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
-    try {
-      const apiKey = process.env.MAPS_API_KEY;
-      const placeId = process.env.MAPS_PLACE_ID;
+  const accessToken = req.headers.authorization?.split(' ')[1];
+  const accountId = process.env.GMB_ACCOUNT_ID;
+  const locationId = process.env.GMB_LOCATION_ID;
 
-      if (!apiKey || !placeId) {
-        throw new Error('Missing API key or Place ID');
-      }
+  if (!accessToken) {
+    return res.status(401).json({ error: 'Access token is missing' });
+  }
 
-      const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
+  try {
+    // URL da API para obter reviews da Google My Business
+    const url = `https://mybusiness.googleapis.com/v4/accounts/${accountId}/locations/${locationId}/reviews`;
 
-      const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-      if (response.data.status !== 'OK') {
-        throw new Error('Failed to fetch reviews from Google Maps API');
-      }
+    const reviews = response.data.reviews.map((review: any) => ({
+      author: review.reviewer.profileName,
+      text: review.comment,
+      rating: review.starRating,
+    }));
 
-      const reviews = response.data.result.reviews.map((review: any) => ({
-        author: review.author_name,
-        text: review.text,
-      }));
-
-      res.status(200).json(reviews);
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-      res.status(500).json({ error: 'Failed to fetch reviews' });
-    }
-  } else {
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    res.status(500).json({ error: 'Failed to fetch reviews' });
   }
 }

@@ -65,18 +65,18 @@ export default function Contact() {
                 className="w-3/4 sm:w-2/3 h-2/3 p-10 mt-10 rounded-t-3xl bg-cloud-white drop-shadow-md flex flex-col items-center justify-start gap-5"
             >
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-10">
-                    <Image
+                {/*    <Image
                         src="/angel-2.png"
                         width={30}
                         height={30}
                         alt="Cute angel with blond hair"
-                    />
-                    <h3 className="text-xl sm:text-3xl font-bold text-baby-blue">send a message!</h3>
+                /> */}
+                    <h3 className="text-xl sm:text-3xl font-bold text-baby-blue">send us a message!</h3>
                 </div>
                 <div className="w-full flex flex-col sm:flex-row gap-3 items-stretch justify-stretch">
                     <input
                         className="p-2 rounded-xl w-full sm:w-1/2 bg-baby-blue placeholder-white"
-                        placeholder="Your name"
+                        placeholder="Name"
                         type="text"
                         name="name"
                         value={name}
@@ -84,7 +84,7 @@ export default function Contact() {
                     />
                     <input
                         className="p-2 rounded-xl w-full sm:w-1/2 bg-baby-blue placeholder-white"
-                        placeholder="Your best e-mail"
+                        placeholder="E-mail"
                         type="email"
                         name="email"
                         value={email}

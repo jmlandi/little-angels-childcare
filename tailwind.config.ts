@@ -11,10 +11,12 @@ const config: Config = {
       fontFamily: {
         sans: ['"League Spartan"', 'sans-serif'],
         schoolbell: ['"Schoolbell"', 'cursive'],
+        fredoka: ['"Fredoka"', 'cursive']
       },
       backgroundImage: {
         'cloud-white': 'url("/cloud-header.png")',
         'cloud-blue': 'url("/bg-cloud-blue.jpg")',
+        'cloud-cyan': 'url("/bg-cyan.png")'
       }
     },
     colors: {

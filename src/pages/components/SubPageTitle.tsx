@@ -14,7 +14,7 @@ export default function SubPageTitle({ title }: SubPageTitleProps) {
                 objectFit="cover"
                 className="z-0"
             />
-            <h2 className="text-center z-10 p-4 text-6xl text-white mb-32 md:mb-44">{title}</h2>
+            <h2 className="text-center z-10 p-4 text-6xl font-fredoka font-semibold text-white mb-32 md:mb-44">{title}</h2>
         </div>
     );
 }

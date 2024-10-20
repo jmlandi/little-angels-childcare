@@ -140,7 +140,7 @@ export default function Header() {
               href="/weekend"
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
             >
-              weekend
+              weekend chilcare
             </Link>
           </li>
           <li>
@@ -173,6 +173,14 @@ export default function Header() {
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
             >
               gallery
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/tuition"
+              className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+            >
+              tuition
             </Link>
           </li>
           <li>
@@ -235,7 +243,7 @@ export default function Header() {
               className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
               onClick={() => setIsMenuOpen(false)} // Close menu when clicked
             >
-              weekend
+              weekend childcare
             </Link>
           </li>
           <li className="w-full">
@@ -249,7 +257,7 @@ export default function Header() {
           </li>
           <li className="w-full">
             <Link
-              href="/scholl-closures"
+              href="/closures"
               className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
               onClick={() => setIsMenuOpen(false)} // Close menu when clicked
             >
@@ -272,6 +280,15 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)} // Close menu when clicked
             >
               gallery
+            </Link>
+          </li>
+          <li className="w-full">
+            <Link
+              href="/tuition"
+              className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+              onClick={() => setIsMenuOpen(false)} // Close menu when clicked
+            >
+              tuition
             </Link>
           </li>
           <li className="w-full">

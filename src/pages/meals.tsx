@@ -23,7 +23,7 @@ export default function Meals() {
                     </div>
                     <div>
                         <h4 className="font-bold text-xl text-baby-blue">Lunch consist of:</h4>
-                        <p>A hot meal, with a choice of meat, fish or vegetarian option, served with rice, vegetables and potatoes.</p>
+                        <p>A vegan option, served with rice, vegetables and potatoes.</p>
                     </div>
                     <div>
                         <h4 className="font-bold text-xl text-baby-blue">Snack consist of:</h4>

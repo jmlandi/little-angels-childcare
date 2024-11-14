@@ -1,4 +1,3 @@
-import Maintenance from "./components/Maintenance";
 import SubPageTitle from "./components/SubPageTitle";
 import Image from "next/image";
 

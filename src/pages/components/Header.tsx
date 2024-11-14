@@ -120,6 +120,14 @@ export default function Header() {
             </Link>
           </li>
           <li>
+              <Link
+                href="/philosophy"
+                className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+              >
+                philosophy
+              </Link>
+            </li> 
+          <li>
             <Link
               href="/testimonials"
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
@@ -133,6 +141,14 @@ export default function Header() {
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
             >
               enrollments
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/tuition"
+              className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+            >
+              tuition
             </Link>
           </li>
           <li>
@@ -177,14 +193,6 @@ export default function Header() {
           </li>
           <li>
             <Link
-              href="/tuition"
-              className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
-            >
-              tuition
-            </Link>
-          </li>
-          <li>
-            <Link
               href="#contact"
               className="transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
             >
@@ -221,11 +229,29 @@ export default function Header() {
           </li>
           <li className="w-full">
             <Link
+              href="/philosophy"
+              className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+              onClick={() => setIsMenuOpen(false)} // Close menu when clicked
+            >
+              philosophy
+            </Link>
+          </li>
+          <li className="w-full">
+            <Link
               href="/testimonials"
               className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
               onClick={() => setIsMenuOpen(false)} // Close menu when clicked
             >
               testimonials
+            </Link>
+          </li>
+          <li className="w-full">
+            <Link
+              href="/tuition"
+              className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
+              onClick={() => setIsMenuOpen(false)} // Close menu when clicked
+            >
+              tuition
             </Link>
           </li>
           <li className="w-full">
@@ -280,15 +306,6 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)} // Close menu when clicked
             >
               gallery
-            </Link>
-          </li>
-          <li className="w-full">
-            <Link
-              href="/tuition"
-              className="block text-center transition duration-150 ease-out hover:ease-in px-2 py-1 text-xl rounded-md text-baby-blue hover:bg-baby-blue hover:text-white"
-              onClick={() => setIsMenuOpen(false)} // Close menu when clicked
-            >
-              tuition
             </Link>
           </li>
           <li className="w-full">

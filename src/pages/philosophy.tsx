@@ -11,7 +11,7 @@ export default function Philosophy() {
                     <q>There&apos;s a lot happening during playtime. Little ones are lifting, dropping, looking, pouring, bouncing, hiding, building, knocking down, and more.
     Children are more than busy when they&apos;re playing. When your children play with you, they are also learning that they are loved and important and that they are fun to be around</q>                
                     <Image
-                        src="/banner-2.png"
+                        src="/philosophy-1.JPEG"
                         width={0} height={0} sizes="100vw"
                         style={{ width: '100%', height: 'auto' }}
                         alt="kids from Little Angels Childcare"
@@ -20,7 +20,7 @@ export default function Philosophy() {
                     <p>Our play-based childhood program teaches children to think creatively so they may succeed in our complex and ever-changing world. Purposeful play is developmentally appropriate and a significant element of any early childhood program.</p>
                     <p>Our program emphasizes the importance of play in a child&apos;s intellectual, social, emotional, and physical development. Play is a way of learning for children. During a typical day, structured and unstructured periods will enable children to learn at their own rate.</p>
                     <Image
-                        src="/banner-3.png"
+                        src="/philosophy-2.JPEG"
                         width={0} height={0} sizes="100vw"
                         style={{ width: '100%', height: 'auto' }}
                         alt="Kids from Little Angels Childcare"
@@ -34,6 +34,13 @@ export default function Philosophy() {
                         <li>It helps in the development of better motor skills and in concentration and thinking skills.</li>
                         <li>reduces children&apos;s risk of getting heart disease, cancer and type-2 diabetes later in life.​</li>
                     </ul>
+                    <Image
+                        src="/philosophy-3.JPEG"
+                        width={0} height={0} sizes="100vw"
+                        style={{ width: '100%', height: 'auto' }}
+                        alt="Kids from Little Angels Childcare"
+                        className="border-solid border-8 rounded-xl border-baby-blue"
+                    />
                     <p className="w-full">Physical activity also boosts children&apos;s wellbeing. For example, active children are more likely to:</p>
                     <ul className="list-disc list-inside bg-baby-blue text-white p-5 rounded-md w-full">
                         <li>be confident and feel like they belong</li>

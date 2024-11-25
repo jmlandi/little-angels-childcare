@@ -18,15 +18,14 @@ export default function Meals() {
                     />
                     <div>
                         <h4 className="font-bold text-xl text-baby-blue">Breakfast consist of:</h4>
-                        <p>Fruits, cereal, milk, bread or muffins.</p>
-                    </div>
+                        <p>Fruits, cereal, milk, bread or muffins.</p></div>
                     <div>
-                        <h4 className="font-bold text-xl text-baby-blue">Lunch consist of:</h4>
-                        <p>A vegan option, served with rice, vegetables and potatoes.</p>
+                        <h4 className="font-bold text-xl text-baby-blue">Lunch <span className="text-black">may vary, but it always consist of:</span></h4>
+                        <p>A variety of veggies, rice, and a vegetarian option for protein. Some options you would see on our lunch menu would be: zucchini, broccolis, potato, green beans, corn, peas, chick peas, pinto beans, black beans, carrots...</p>
                     </div>
                     <div>
                         <h4 className="font-bold text-xl text-baby-blue">Snack consist of:</h4>
-                        <p>A variety of fruits, veggies, and crackers.</p>
+                        <p>A variety of fruits, and/or veggies, and crackers</p>
                     </div>
                 </div>
             </main>

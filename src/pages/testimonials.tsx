@@ -37,12 +37,12 @@ export default function Testimonials() {
         <div className='flex flex-col items-center justify-center'>
             <div className='flex flex-row flex-wrap items-center justify-center gap-8'>
             {testimonials.map((testimonial, index) => (
-                <div key={index} className="flex flex-col items-center justify-center px-5 py-10 text-center bg-baby-cyan rounded-xl w-[360px] h-[420px]">
+                <div key={index} className="flex flex-col items-center justify-center px-5 py-10 text-center bg-baby-blue rounded-xl w-[360px] h-[420px]">
                 <div className="flex flex-col items-center justify-center gap-5 h-[300px]">
-                    <p className="text-sm font-thin text-baby-blue">{testimonial.text}</p>
+                    <p className="text-sm font-thin text-white">{testimonial.text}</p>
                 </div>
-                <hr className="w-full h-[1px] bg-baby-blue border-0 rounded md:my-5"></hr>
-                <p className="text-xl text-baby-blue">{testimonial.author}</p>
+                <hr className="w-full h-[1px] bg-white border-0 rounded md:my-5"></hr>
+                <p className="text-xl text-white">{testimonial.author}</p>
                 </div>
             ))}
             </div>

@@ -8,8 +8,9 @@ import ModalForm from './components/ModalForm';
 export default function Home() {
   const [currentImage, setCurrentImage] = React.useState(0);
   const images = [
-    'banner-1.png',
-    'banner-2.png',
+    'banner-4.JPEG',
+    'banner-5.JPEG',
+    'banner-6.JPEG',
     'banner-3.png'
   ];
 

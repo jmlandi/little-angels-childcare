@@ -11,8 +11,8 @@ export default function Meals() {
                     <p>We are happy, and excited to offer homemade, nutritious, and healthy meals. All of our ingredients are certified organic, and as a bonus, during the summer our veggies and greens are grown in our Little Angels garden, and hand picked by the kids.</p>
                     <div className="flex flex-col sm:flex-row gap-10 items-center justify-center">
                         <Image
-                            src="/fruits.jpeg"
-                            width={0} height={0} sizes="10vw"
+                            src="/fruits.jpg"
+                            width={0} height={0} sizes="100vw"
                             style={{ width: '100%', height: 'auto' }}
                             alt="Image of meals from Little Angels Childcare"
                             className="border-solid border-8 rounded-xl border-baby-blue sm:max-w-1/3"

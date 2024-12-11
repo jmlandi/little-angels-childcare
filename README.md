@@ -8,6 +8,7 @@ Welcome to **Little Angels Childcare**, a project built with **Next.js**, **Post
 
 This project is designed for a childcare service and includes the following technologies:
 
+- **🎨 UX/UI**: [Built with figma](https://www.figma.com/design/IX8DzbQVxrTqkvOoZHpx8k/LITTLE-ANGLES-CHILDCARE---Desktop?node-id=0-1&t=0FiNNWS0kdanluYu-1).
 - **🖥️ Frontend**: Built with Next.js.
 - **🐘 Database**: PostgreSQL for data storage.
 - **🐳 Infrastructure**: Docker containers for the app, PostgreSQL, and Nginx for reverse proxy.

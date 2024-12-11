@@ -1,6 +1,6 @@
 # 👼 Little Angels Childcare
 
-Welcome to **Little Angels Childcare**, a project built with **Next.js**, **PostgreSQL**, and **Docker**. This freelance project provides a functional web application running on a production server, hosted on a VPN with **Hostinger** and accessible at [littleangelspdx.com](http://littleangelspdx.com).
+Welcome to **Little Angels Childcare**, a project built with **Next.js**, **PostgreSQL**, and **Docker**. This freelance project provides a functional web application running on a production server, hosted on a VPS with **Hostinger** and accessible at [littleangelspdx.com](http://littleangelspdx.com).
 
 ---
 

@@ -1,7 +1,7 @@
 import { Content } from "@domain/entities/Content";
 import { ContentRepository } from "@domain/repositories/ContentRepository";
 
-export class CreateContentUseCase{
+export class CreateContentUseCase {
     public constructor(private contentRepository: ContentRepository) {}
 
     async execute(data: {pageName: string, content: object}): Promise<Content> {

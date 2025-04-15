@@ -1,0 +1,29 @@
+###
+
+POST http://127.0.0.1:3000/api/content/create HTTP/1.1
+content-type: application/json
+
+{
+    "pageName": "philosophy",
+    "content": {"header": {"title": "philosophy title"}}
+}
+
+###
+
+POST http://127.0.0.1:3000/api/content/update HTTP/1.1
+content-type: application/json
+
+{
+    "pageName": "philosophy",
+    "content": {"header": {"title": "Childcare title"}}
+}
+
+###
+
+GET http://127.0.0.1:3000/api/content/read?pageName=philosophy HTTP/1.1
+content-type: application/json
+
+###
+
+GET http://127.0.0.1:3000/api/contacts HTTP/1.1
+content-type: application/json

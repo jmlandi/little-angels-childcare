@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
-import axios from 'axios';
+import React, { useEffect, useMemo, useState, ChangeEvent } from "react";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { readCookie, verifyToken } from "@infrastructure/auth";
 
 interface Contact {
   id: string;
@@ -11,110 +12,227 @@ interface Contact {
 }
 
 interface ContactsPageProps {
-  contacts: Contact[];
+  initialContacts: Contact[];
 }
 
-const ContactsPage: React.FC<ContactsPageProps> = ({ contacts: initialContacts }) => {
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [contacts, setContacts] = useState(initialContacts);
+const ContactsPage: React.FC<ContactsPageProps> = ({ initialContacts }) => {
+  const router = useRouter();
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real application, you would validate this against a secure backend
-    if (password === 'LittleAngelsAdmin123#') {
-      setIsAuthenticated(true);
-      setErrorMessage('');
-    } else {
-      setErrorMessage('Incorrect password');
-    }
-  };
+  // Data
+  const [contacts, setContacts] = useState<Contact[]>(() => initialContacts ?? []);
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setPassword('');
-  };
+  // Filters & pagination
+  const [search, setSearch] = useState<string>("");
+  const [fromDate, setFromDate] = useState<string>(""); // yyyy-mm-dd
+  const [toDate, setToDate] = useState<string>("");
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
 
+  // Refetch (optional) from API
   const handleRefresh = async () => {
     try {
-      const response = await axios.get('/api/contacts');
-      setContacts(response.data.contacts);
+      const res = await fetch("/api/contacts");
+      const data = await res.json();
+      setContacts(data.contacts ?? []);
+      setPage(1);
     } catch (error) {
-      console.error('Error refreshing contacts:', error);
+      console.error("Error refreshing contacts:", error);
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-baby-blue text-white">
-        <h1 className="text-2xl font-bold mb-4 text-center">Admin Authentication</h1>
-        <form onSubmit={handlePasswordSubmit} className="max-w-sm w-full">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="w-full p-2 mb-4 border rounded text-black"
-          />
-          <div className="flex justify-center">
-            <button type="submit" className="bg-white text-baby-blue p-2 rounded">
-              Submit
-            </button>
-          </div>
-          {errorMessage && <p className="text-red-300 mt-2 text-center">{errorMessage}</p>}
-        </form>
-      </div>
-    );
-  }
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      router.push("/admin/login");
+    }
+  };
+
+  // Derived: filtered + sorted (latest first)
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const from = fromDate ? new Date(`${fromDate}T00:00:00`) : null;
+    const to = toDate ? new Date(`${toDate}T23:59:59.999`) : null;
+
+    return contacts
+      .filter((c) => {
+        const matchesQuery =
+          !q ||
+          c.name.toLowerCase().includes(q) ||
+          c.email.toLowerCase().includes(q) ||
+          c.message.toLowerCase().includes(q);
+
+        const created = new Date(c.createdAt);
+        const withinFrom = !from || created >= from;
+        const withinTo = !to || created <= to;
+
+        return matchesQuery && withinFrom && withinTo;
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+  }, [contacts, search, fromDate, toDate]);
+
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const startIdx = (currentPage - 1) * pageSize;
+  const endIdx = startIdx + pageSize;
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  // Reset to page 1 on filter changes that narrow results
+  useEffect(() => {
+    setPage(1);
+  }, [search, fromDate, toDate, pageSize]);
+
+  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) =>
+    setPageSize(Number(e.target.value));
 
   return (
     <div className="w-screen h-screen overflow-auto bg-baby-blue text-white">
-      <div className="container mx-auto p-4 flex flex-col items-center">
-        <div className="w-full flex justify-between mb-4">
-          <button onClick={handleLogout} className="bg-white text-baby-blue p-2 rounded">
-            Logout
-          </button>
-          <button onClick={handleRefresh} className="bg-white text-baby-blue p-2 rounded">
-            Refresh
-          </button>
+      <div className="container mx-auto p-4 flex flex-col items-center gap-4">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="flex gap-2">
+            <button
+              onClick={handleLogout}
+              className="bg-white text-baby-blue p-2 rounded"
+            >
+              Logout
+            </button>
+            <button
+              onClick={handleRefresh}
+              className="bg-white text-baby-blue p-2 rounded"
+            >
+              Refresh
+            </button>
+          </div>
+
+          {/* Filters */}
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search name, email or message…"
+              className="rounded p-2 text-baby-blue w-fit"
+            />
+            <label className="text-sm">From</label>
+            <input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="rounded p-2 text-baby-blue"
+            />
+            <label className="text-sm">To</label>
+            <input
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="rounded p-2 text-baby-blue"
+            />
+            <label className="text-sm">Per page</label>
+            <select
+              value={pageSize}
+              onChange={onPageSizeChange}
+              className="rounded p-2 text-baby-blue"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
         </div>
-        <h1 className="text-2xl font-bold mb-4 text-center">Contacts</h1>
-        <div className="w-full overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-white text-baby-blue">
-                <th className="border p-2">Name</th>
-                <th className="border p-2">Email</th>
-                <th className="border p-2">Message</th>
-                <th className="border p-2">Created At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((contact) => (
-                <tr key={contact.id}>
-                  <td className="border p-2">{contact.name}</td>
-                  <td className="border p-2">{contact.email}</td>
-                  <td className="border p-2">{contact.message}</td>
-                  <td className="border p-2">{new Date(contact.createdAt).toLocaleString()}</td>
+
+        <h1 className="text-2xl font-bold text-center">Contacts</h1>
+
+        <div className="w-full">
+          <div className="mb-2 text-sm opacity-90">
+            Showing{" "}
+            <span className="font-semibold">
+              {total === 0 ? 0 : startIdx + 1}–{Math.min(endIdx, total)}
+            </span>{" "}
+            of <span className="font-semibold">{total}</span>
+          </div>
+
+          <div className="w-full overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-white text-baby-blue">
+                  <th className="border p-2 text-left">Name</th>
+                  <th className="border p-2 text-left">Email</th>
+                  <th className="border p-2 text-left">Message</th>
+                  <th className="border p-2 text-left">Created At</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pageItems.length === 0 ? (
+                  <tr>
+                    <td
+                      className="border p-4 text-center"
+                      colSpan={4}
+                    >
+                      No contacts found.
+                    </td>
+                  </tr>
+                ) : (
+                  pageItems.map((contact) => (
+                    <tr key={contact.id} className="align-top">
+                      <td className="border p-2">{contact.name}</td>
+                      <td className="border p-2">{contact.email}</td>
+                      <td className="border p-2 max-w-[520px] whitespace-pre-wrap break-words">
+                        {contact.message}
+                      </td>
+                      <td className="border p-2">
+                        {new Date(contact.createdAt).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              className="bg-white text-baby-blue px-3 py-2 rounded disabled:opacity-50"
+              disabled={currentPage <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+            >
+              Prev
+            </button>
+            <span className="text-sm">
+              Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+            </span>
+            <button
+              className="bg-white text-baby-blue px-3 py-2 rounded disabled:opacity-50"
+              disabled={currentPage >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+// Build a safe base URL for SSR fetch (works locally and in prod)
+export const getServerSideProps: GetServerSideProps<ContactsPageProps> = async ({ req }) => {
   try {
-    const response = await axios.get('http://localhost:3000/api/contacts');
-    const contacts = response.data.contacts;
-    return { props: { contacts } };
+    const protoHeader = req.headers["x-forwarded-proto"];
+    const protocol = Array.isArray(protoHeader) ? protoHeader[0] : protoHeader || "http";
+    const host = req.headers.host;
+    const baseUrl = `${protocol}://${host}`;
+
+    const res = await fetch(`${baseUrl}/api/contacts`);
+    const data = await res.json();
+
+    return { props: { initialContacts: data.contacts ?? [] } };
   } catch (error) {
-    console.error('Error fetching contacts:', error);
-    return { props: { contacts: [] } };
+    console.error("Error fetching contacts:", error);
+    return { props: { initialContacts: [] } };
   }
 };
 

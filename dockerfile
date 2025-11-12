@@ -1,28 +1,21 @@
-FROM node:20-slim AS builder
+FROM node:20-slim
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm ci --only=production
 
-COPY . .
+# Copy pre-built files (built on host, not in Docker)
+COPY .next ./.next
+COPY public ./public
+COPY src ./src
+COPY next.config.mjs ./
+COPY tsconfig.json ./
+COPY postcss.config.mjs ./
+COPY tailwind.config.ts ./
 
-# Increase Node.js memory limit and disable worker threads to avoid SIGBUS
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN npm run build -- --no-lint
-
-FROM node:20-slim
-
-WORKDIR /app
-
-# Copy only necessary files from builder
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
+ENV NODE_ENV=production
 
 EXPOSE 3000
 

@@ -1,29 +1,107 @@
- > [builder 6/6] RUN npm run build:
-4.459 
-4.459 ./src/pages/components/Layout.tsx
-4.459 50:9  Warning: Prefer `next/script` component when using the inline script for Google Analytics. See: https://nextjs.org/docs/messages/next-script-for-ga  @next/next/next-script-for-ga
-4.459 
-4.459 ./src/pages/index.tsx
-4.459 25:6  Warning: React Hook React.useEffect has a missing dependency: 'images.length'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-4.459 
-4.459 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
-7.239    Creating an optimized production build ...
-7.883 Next.js build worker exited with code: null and signal: SIGBUS
+======================================
+Little Angels Childcare Deployment
+======================================
+Creating backup directory...
+Backing up database...
+Database backup skipped (container might not be running)
+Backing up project files...
+✓ Backup completed: little-angels-backup-20251112_015353
+Updating code from repository...
+No local changes to save
+remote: Enumerating objects: 9, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 5 (delta 2), reused 5 (delta 2), pack-reused 0 (from 0)
+Unpacking objects: 100% (5/5), 1.18 KiB | 1.18 MiB/s, done.
+From https://github.com/jmlandi/little-angels-childcare
+ * branch            main       -> FETCH_HEAD
+   006feef..99146c1  main       -> origin/main
+Updating 006feef..99146c1
+Fast-forward
+ dockerfile      |  5 +++--
+ error.txt       | 29 +++++++++++++++++++++++++++++
+ next.config.mjs |  8 +++++++-
+ 3 files changed, 39 insertions(+), 3 deletions(-)
+✓ Code updated successfully
+Restarting services...
+WARN[0000] /root/little-angels-childcare/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 1/1
+ ! Network little-angels-childcare_app-network  Resource is still in use                                                                                                                               0.0s 
+WARN[0000] /root/little-angels-childcare/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+#1 [internal] load local bake definitions
+#1 reading from stdin 531B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from dockerfile
+#2 transferring dockerfile: 595B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [builder 1/6] FROM docker.io/library/node:20-slim@sha256:12541e65a3777c6035245518eb43006ed08ca8c684e68cd04ecb4653bdf6cfe1
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 2.51MB 1.3s done
+#6 DONE 1.3s
+
+#7 [builder 2/6] WORKDIR /app
+#7 CACHED
+
+#8 [builder 3/6] COPY package*.json ./
+#8 CACHED
+
+#9 [builder 4/6] RUN npm ci
+#9 CACHED
+
+#10 [builder 5/6] COPY . .
+#10 DONE 13.1s
+
+#11 [builder 6/6] RUN npm run build -- --no-lint
+#11 0.312 
+#11 0.312 > little-angels-childcare@0.1.0 build
+#11 0.312 > next build --no-lint
+#11 0.312 
+#11 0.765  ⚠ Linting is disabled.
+#11 0.913   ▲ Next.js 14.2.32
+#11 0.914   - Environments: .env
+#11 0.914 
+#11 0.914    Checking validity of types ...
+#11 5.761    Creating an optimized production build ...
+#11 6.495 Next.js build worker exited with code: null and signal: SIGBUS
+#11 ERROR: process "/bin/sh -c npm run build -- --no-lint" did not complete successfully: exit code: 1
 ------
-dockerfile:14
+ > [builder 6/6] RUN npm run build -- --no-lint:
+0.312 > little-angels-childcare@0.1.0 build
+0.312 > next build --no-lint
+0.312 
+0.765  ⚠ Linting is disabled.
+0.913   ▲ Next.js 14.2.32
+0.914   - Environments: .env
+0.914 
+0.914    Checking validity of types ...
+5.761    Creating an optimized production build ...
+6.495 Next.js build worker exited with code: null and signal: SIGBUS
+------
+dockerfile:15
 
 --------------------
 
-  12 |     ENV NODE_OPTIONS="--max-old-space-size=4096"
+  13 |     ENV NEXT_TELEMETRY_DISABLED=1
 
-  13 |     
+  14 |     
 
-  14 | >>> RUN npm run build
+  15 | >>> RUN npm run build -- --no-lint
 
-  15 |     
+  16 |     
 
-  16 |     FROM node:20-slim
+  17 |     FROM node:20-slim
 
 --------------------
 
-failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+failed to solve: process "/bin/sh -c npm run build -- --no-lint" did not complete successfully: exit code: 1

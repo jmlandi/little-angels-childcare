@@ -9,7 +9,7 @@ function b64url(input: Buffer | string) {
 }
 
 export function signToken(): string {
-  const secret = process.env.ADMIN_JWT_SECRET || "";
+  const secret = process.env.ADMIN_JWT_SECRET || process.env.NEXTAUTH_SECRET || "";
   const payload = { exp: Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS };
   const body = b64url(JSON.stringify(payload));
   const sig = crypto.createHmac("sha256", secret).update(body).digest("base64url");
@@ -18,7 +18,7 @@ export function signToken(): string {
 
 export function verifyToken(token?: string) {
   if (!token) return { ok: false as const };
-  const secret = process.env.ADMIN_JWT_SECRET || "";
+  const secret = process.env.ADMIN_JWT_SECRET || process.env.NEXTAUTH_SECRET || "";
   const [body, sig] = token.split(".");
   if (!body || !sig) return { ok: false as const };
 

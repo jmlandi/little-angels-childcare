@@ -17,6 +17,7 @@ PROJECT_DIR="${SCRIPT_DIR}/little-angels-childcare"
 BACKUP_DIR="${SCRIPT_DIR}/backup"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_NAME="little-angels-backup-${TIMESTAMP}"
+DEPLOY_STATE_DIR="${PROJECT_DIR}/.deploy"
 
 echo -e "${GREEN}======================================${NC}"
 echo -e "${GREEN}Little Angels Childcare Deployment${NC}"
@@ -61,17 +62,60 @@ git pull origin main || {
 }
 
 echo -e "${GREEN}✓ Code updated successfully${NC}"
+# Prepare deploy state dir
+mkdir -p "${DEPLOY_STATE_DIR}"
 
-# Clean node_modules to ensure fresh install
-echo -e "${YELLOW}Cleaning node_modules...${NC}"
-rm -rf node_modules
+# Decide whether we need to (re)install dependencies
+LOCK_FILE="${PROJECT_DIR}/package-lock.json"
+PREV_LOCK_HASH_FILE="${DEPLOY_STATE_DIR}/lock.hash"
 
-# Build application on host (outside Docker to avoid SIGBUS)
-echo -e "${YELLOW}Installing dependencies...${NC}"
-npm ci --prefer-offline --no-audit || {
-    echo -e "${RED}Error: npm ci failed${NC}"
-    exit 1
+hash_file() {
+    if command -v sha256sum >/dev/null 2>&1; then
+        sha256sum "$1" | awk '{print $1}'
+    else
+        shasum -a 256 "$1" | awk '{print $1}'
+    fi
 }
+
+NEED_INSTALL=1
+if [ "${FORCE_INSTALL:-0}" = "1" ]; then
+    echo -e "${YELLOW}FORCE_INSTALL is set. Will reinstall dependencies.${NC}"
+else
+    if [ -f "${LOCK_FILE}" ]; then
+        CURRENT_LOCK_HASH=$(hash_file "${LOCK_FILE}")
+    else
+        CURRENT_LOCK_HASH=""
+    fi
+
+    if [ -d "${PROJECT_DIR}/node_modules" ] && \
+         [ -f "${PREV_LOCK_HASH_FILE}" ] && \
+         [ -n "${CURRENT_LOCK_HASH}" ] && \
+         [ "$(cat "${PREV_LOCK_HASH_FILE}")" = "${CURRENT_LOCK_HASH}" ]; then
+        echo -e "${YELLOW}Lockfile unchanged and node_modules present. Skipping dependency install.${NC}"
+        NEED_INSTALL=0
+    else
+        echo -e "${YELLOW}Lockfile changed or node_modules missing. Installing dependencies...${NC}"
+    fi
+fi
+
+if [ "${NEED_INSTALL}" -eq 1 ]; then
+    echo -e "${YELLOW}Cleaning node_modules...${NC}"
+    rm -rf node_modules
+
+    echo -e "${YELLOW}Installing dependencies (npm ci)...${NC}"
+    START_TS=$(date +%s)
+    NPM_CONFIG_FUND=false NPM_CONFIG_AUDIT=false npm ci --prefer-offline || {
+            echo -e "${RED}Error: npm ci failed${NC}"
+            exit 1
+    }
+    END_TS=$(date +%s)
+    echo -e "${GREEN}✓ Dependencies installed in $((END_TS-START_TS))s${NC}"
+
+    # Record current lockfile hash for next deploy
+    if [ -n "${CURRENT_LOCK_HASH}" ]; then
+        echo "${CURRENT_LOCK_HASH}" > "${PREV_LOCK_HASH_FILE}"
+    fi
+fi
 
 echo -e "${YELLOW}Building application...${NC}"
 npm run build || {

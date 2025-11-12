@@ -1,0 +1,29 @@
+ > [builder 6/6] RUN npm run build:
+4.459 
+4.459 ./src/pages/components/Layout.tsx
+4.459 50:9  Warning: Prefer `next/script` component when using the inline script for Google Analytics. See: https://nextjs.org/docs/messages/next-script-for-ga  @next/next/next-script-for-ga
+4.459 
+4.459 ./src/pages/index.tsx
+4.459 25:6  Warning: React Hook React.useEffect has a missing dependency: 'images.length'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+4.459 
+4.459 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+7.239    Creating an optimized production build ...
+7.883 Next.js build worker exited with code: null and signal: SIGBUS
+------
+dockerfile:14
+
+--------------------
+
+  12 |     ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+  13 |     
+
+  14 | >>> RUN npm run build
+
+  15 |     
+
+  16 |     FROM node:20-slim
+
+--------------------
+
+failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1

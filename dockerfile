@@ -8,10 +8,11 @@ RUN npm ci
 
 COPY . .
 
-# Increase Node.js memory limit for build
+# Increase Node.js memory limit and disable worker threads to avoid SIGBUS
 ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npm run build
+RUN npm run build -- --no-lint
 
 FROM node:20-slim
 

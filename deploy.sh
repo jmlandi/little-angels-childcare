@@ -79,8 +79,8 @@ npm run build || {
 # Restart services
 echo -e "${YELLOW}Restarting services...${NC}"
 if [ -f "${PROJECT_DIR}/docker-compose.yml" ]; then
-    docker-compose -f "${PROJECT_DIR}/docker-compose.yml" down
-    docker-compose -f "${PROJECT_DIR}/docker-compose.yml" up -d --build
+    cd "${PROJECT_DIR}"
+    docker-compose down && docker-compose up -d --build
     echo -e "${GREEN}✓ Docker services restarted${NC}"
 else
     # If using PM2 or systemd

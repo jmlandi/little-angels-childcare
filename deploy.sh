@@ -12,8 +12,9 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_DIR="./little-angels-childcare"
-BACKUP_DIR="./backups"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="${SCRIPT_DIR}/little-angels-childcare"
+BACKUP_DIR="${SCRIPT_DIR}/backup"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_NAME="little-angels-backup-${TIMESTAMP}"
 
@@ -28,8 +29,7 @@ mkdir -p "${BACKUP_DIR}"
 # Backup database (if using Docker)
 echo -e "${YELLOW}Backing up database...${NC}"
 if [ -f "${PROJECT_DIR}/docker-compose.yml" ]; then
-    cd "${PROJECT_DIR}"
-    docker-compose exec -T postgres pg_dump -U postgres little_angels > "${BACKUP_DIR}/${BACKUP_NAME}.sql" 2>/dev/null || {
+    docker-compose -f "${PROJECT_DIR}/docker-compose.yml" exec -T postgres pg_dump -U postgres little_angels > "${BACKUP_DIR}/${BACKUP_NAME}.sql" 2>/dev/null || {
         echo -e "${YELLOW}Database backup skipped (container might not be running)${NC}"
     }
 fi
@@ -78,9 +78,9 @@ npm run build || {
 
 # Restart services
 echo -e "${YELLOW}Restarting services...${NC}"
-if [ -f docker-compose.yml ]; then
-    docker-compose down
-    docker-compose up -d --build
+if [ -f "${PROJECT_DIR}/docker-compose.yml" ]; then
+    docker-compose -f "${PROJECT_DIR}/docker-compose.yml" down
+    docker-compose -f "${PROJECT_DIR}/docker-compose.yml" up -d --build
     echo -e "${GREEN}✓ Docker services restarted${NC}"
 else
     # If using PM2 or systemd
@@ -94,9 +94,8 @@ fi
 
 # Cleanup old backups (keep last 10)
 echo -e "${YELLOW}Cleaning up old backups...${NC}"
-cd "${BACKUP_DIR}"
-ls -t little-angels-backup-*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm
-ls -t little-angels-backup-*.sql 2>/dev/null | tail -n +11 | xargs -r rm
+ls -t "${BACKUP_DIR}"/little-angels-backup-*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm
+ls -t "${BACKUP_DIR}"/little-angels-backup-*.sql 2>/dev/null | tail -n +11 | xargs -r rm
 
 echo -e "${GREEN}======================================${NC}"
 echo -e "${GREEN}Deployment completed successfully!${NC}"

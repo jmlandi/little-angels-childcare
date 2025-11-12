@@ -84,6 +84,36 @@ INSERT INTO images (name, url, alt_text) VALUES
 ('Healthy Meals', '/fruits.jpg', 'Fresh organic fruits and vegetables')
 ON CONFLICT DO NOTHING;
 
+-- Add remaining site images referenced across public pages (non-admin, non-api)
+INSERT INTO images (name, url, alt_text) VALUES
+('Site Logo', '/logo.svg', 'Little Angels'),
+('Cloud Background', '/bg-cloud-blue.jpg', 'Cloud background'),
+('Angel Illustration', '/angel-1.png', 'Little angel above a cute cloud'),
+('Weekend Drop-In 1', '/weekend.JPEG', 'Weekend Drop-In'),
+('Weekend Drop-In 2', '/banner-2.png', 'Weekend Drop-In'),
+('Homepage Banner 3', '/banner-3.png', NULL),
+('Homepage Banner 4', '/banner-4.JPEG', NULL),
+('Homepage Banner 5', '/banner-5.JPEG', NULL),
+('Homepage Banner 6', '/banner-6.JPEG', NULL),
+('Core Value - Explore', '/core-value-1.png', 'why choose us'),
+('Core Value - Create', '/core-value-2.png', 'create'),
+('Core Value - Learn', '/core-value-3.png', 'why choose us'),
+('Our Mission Illustration', '/our-mission.png', 'our mission'),
+('Brightwheel Example', '/brightweel.png', 'Brightwheel App example'),
+('Gallery Image 1', '/gallery/gallery-1.png', 'Image of a child'),
+('Gallery Image 2', '/gallery/gallery-2.png', 'Image of a child'),
+('Gallery Image 3', '/gallery/gallery-3.png', 'Image of a child'),
+('Gallery Image 4', '/gallery/gallery-4.png', 'Image of a child'),
+('Gallery Image 5', '/gallery/gallery-5.png', 'Image of a child'),
+('Gallery Image 6', '/gallery/gallery-6.png', 'Image of a child'),
+('Gallery Image 7', '/gallery/gallery-7.png', 'Image of a child'),
+('Gallery Image 8', '/gallery/gallery-8.png', 'Image of a child'),
+('Gallery Image 9', '/gallery/gallery-9.png', 'Image of a child'),
+('Gallery Image 10', '/gallery/gallery-10.png', 'Image of a child'),
+('Gallery Image 11', '/gallery/gallery-11.png', 'Image of a child'),
+('Gallery Image 12', '/gallery/gallery-12.png', 'Image of a child')
+ON CONFLICT DO NOTHING;
+
 -- Add sample reviews (only if they don't exist)
 INSERT INTO reviews (author_name, rating, text, visible) VALUES
 ('Sarah Johnson', 5, 'Little Angels has been amazing for our daughter. The bilingual environment and play-based learning approach have helped her grow so much. Mariana and her team truly care about each child.', true),

@@ -62,17 +62,18 @@ git pull origin main || {
 
 echo -e "${GREEN}✓ Code updated successfully${NC}"
 
-# Clean node_modules and package-lock to ensure fresh install
+# Clean node_modules to ensure fresh install
 echo -e "${YELLOW}Cleaning node_modules...${NC}"
-rm -rf node_modules package-lock.json
+rm -rf node_modules
 
 # Build application on host (outside Docker to avoid SIGBUS)
-echo -e "${YELLOW}Building application on host...${NC}"
-npm install || {
-    echo -e "${RED}Error: npm install failed${NC}"
+echo -e "${YELLOW}Installing dependencies...${NC}"
+npm ci --prefer-offline --no-audit || {
+    echo -e "${RED}Error: npm ci failed${NC}"
     exit 1
 }
 
+echo -e "${YELLOW}Building application...${NC}"
 npm run build || {
     echo -e "${RED}Error: Build failed${NC}"
     exit 1

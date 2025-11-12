@@ -19,6 +19,15 @@ TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_NAME="little-angels-backup-${TIMESTAMP}"
 DEPLOY_STATE_DIR="${PROJECT_DIR}/.deploy"
 
+# NPM install tuning (can override via env)
+export NPM_CONFIG_FUND=${NPM_CONFIG_FUND:-false}
+export NPM_CONFIG_AUDIT=${NPM_CONFIG_AUDIT:-false}
+export NPM_CONFIG_PROGRESS=${NPM_CONFIG_PROGRESS:-false}
+export NPM_CONFIG_CACHE=${NPM_CONFIG_CACHE:-"${SCRIPT_DIR}/.npm-cache"}
+export NPM_REGISTRY=${NPM_REGISTRY:-"https://registry.npmjs.org/"}
+export NPM_INSTALL_TIMEOUT=${NPM_INSTALL_TIMEOUT:-600} # seconds
+mkdir -p "${NPM_CONFIG_CACHE}"
+
 echo -e "${GREEN}======================================${NC}"
 echo -e "${GREEN}Little Angels Childcare Deployment${NC}"
 echo -e "${GREEN}======================================${NC}"
@@ -102,14 +111,69 @@ if [ "${NEED_INSTALL}" -eq 1 ]; then
     echo -e "${YELLOW}Cleaning node_modules...${NC}"
     rm -rf node_modules
 
+    echo -e "${YELLOW}Configuring npm registry: ${NPM_REGISTRY}${NC}"
+    npm config set registry "${NPM_REGISTRY}" >/dev/null 2>&1 || true
+
     echo -e "${YELLOW}Installing dependencies (npm ci)...${NC}"
     START_TS=$(date +%s)
-    NPM_CONFIG_FUND=false NPM_CONFIG_AUDIT=false npm ci --prefer-offline || {
-            echo -e "${RED}Error: npm ci failed${NC}"
-            exit 1
+    set +e
+    INSTALL_SUCCEEDED=0
+
+    # Helper to run with optional timeout if available
+    run_with_timeout() {
+        if command -v timeout >/dev/null 2>&1; then
+            timeout "${NPM_INSTALL_TIMEOUT}"s bash -lc "$1"
+            return $?
+        else
+            # No timeout available; run directly
+            bash -lc "$1"
+            return $?
+        fi
     }
+
+    # Attempt 1: npm ci with prefer-offline
+    run_with_timeout "npm ci --prefer-offline"
+    RC=$?
+    if [ $RC -eq 0 ]; then
+        INSTALL_SUCCEEDED=1
+    else
+        echo -e "${YELLOW}npm ci (prefer-offline) failed or timed out (rc=${RC}). Retrying without prefer-offline...${NC}"
+        # Attempt 2: npm ci without prefer-offline
+        run_with_timeout "npm ci"
+        RC=$?
+        if [ $RC -eq 0 ]; then
+            INSTALL_SUCCEEDED=1
+        else
+            echo -e "${YELLOW}npm ci retry failed (rc=${RC}). Trying without optional dependencies...${NC}"
+            # Attempt 3: npm ci --no-optional
+            run_with_timeout "npm ci --no-optional"
+            RC=$?
+            if [ $RC -eq 0 ]; then
+                INSTALL_SUCCEEDED=1
+            else
+                echo -e "${YELLOW}npm ci --no-optional failed (rc=${RC}). Falling back to npm install --no-optional...${NC}"
+                # Attempt 4: npm install --no-optional (last resort)
+                run_with_timeout "npm install --no-optional"
+                RC=$?
+                if [ $RC -eq 0 ]; then
+                    INSTALL_SUCCEEDED=1
+                fi
+            fi
+        fi
+    fi
+
+    set -e
+    if [ $INSTALL_SUCCEEDED -ne 1 ]; then
+        echo -e "${RED}Error: Dependency installation failed after multiple attempts${NC}"
+        exit 1
+    fi
+
     END_TS=$(date +%s)
-    echo -e "${GREEN}✓ Dependencies installed in $((END_TS-START_TS))s${NC}"
+    ELAPSED=$((END_TS-START_TS))
+    echo -e "${GREEN}✓ Dependencies installed in ${ELAPSED}s${NC}"
+    if [ ${ELAPSED} -gt 120 ]; then
+        echo -e "${YELLOW}Note: install took ${ELAPSED}s — likely a cold install or slow I/O/network.${NC}"
+    fi
 
     # Record current lockfile hash for next deploy
     if [ -n "${CURRENT_LOCK_HASH}" ]; then

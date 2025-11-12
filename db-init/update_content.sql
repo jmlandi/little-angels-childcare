@@ -1,84 +1,8 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Update script to add all website content to the CMS
+-- Run this when convenient to populate Mariana's admin panel with all existing content
 
-CREATE TABLE contacts (
-    id uuid DEFAULT gen_random_uuid(),
-    name VARCHAR(255),
-    email VARCHAR(255),
-    message TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE pages_content (
-    id SERIAL PRIMARY KEY,
-    page_name TEXT NOT NULL,
-    content JSONB NOT NULL
-);
-
-INSERT INTO pages_content (page_name, content)
-VALUES
-(
-    'homepage', 
-    '{
-        "title": "Welcome to Little Angels",
-        "subtitle": "Where children blossom into their best selves.",
-        "image_url": "https://example.com/images/hero.jpg",
-        "button": {
-            "text": "Learn More",
-            "url": "/about-us"
-        }
-    }'
-),
-(
-    'about_us',  
-    '{
-        "title": "Our Mission",
-        "description": "To provide a nurturing environment that supports the holistic growth of children.",
-        "image_url": "https://example.com/images/mission.jpg"
-    }'
-),
-(
-    'contact_us',
-    '{
-        "form_fields": [
-            {"name": "full_name", "type": "text", "label": "Full Name"},
-            {"name": "email", "type": "email", "label": "Email Address"},
-            {"name": "message", "type": "textarea", "label": "Your Message"}
-        ],
-        "submit_button": {"text": "Send Message"}
-    }'
-);
-
--- Images table for S3-stored images
-CREATE TABLE images (
-    id uuid DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    url TEXT NOT NULL,
-    alt_text TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
--- Site content table for editable text content
-CREATE TABLE site_content (
-    id SERIAL PRIMARY KEY,
-    section VARCHAR(100) NOT NULL,
-    key VARCHAR(100) NOT NULL,
-    value TEXT NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(section, key)
-);
-
--- Reviews table for Google reviews management
-CREATE TABLE reviews (
-    id SERIAL PRIMARY KEY,
-    author_name VARCHAR(255) NOT NULL,
-    rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    text TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    visible BOOLEAN DEFAULT true
-);
+-- First, clear existing sample content
+DELETE FROM site_content WHERE section IN ('hero', 'contact', 'about');
 
 -- Insert comprehensive site content from all pages
 INSERT INTO site_content (section, key, value) VALUES
@@ -146,10 +70,69 @@ INSERT INTO site_content (section, key, value) VALUES
 ('enrollments', 'button_text', 'Schedule a tour'),
 ('enrollments', 'offer_title', 'Offer');
 
--- Insert some sample reviews
-INSERT INTO reviews (author_name, rating, text, visible) VALUES
-('Sarah Johnson', 5, 'Amazing childcare center! My daughter loves going there every day. The staff is incredibly caring and professional.', true),
-('Mike Chen', 5, 'Little Angels has been wonderful for our son. Great activities, nutritious meals, and excellent communication with parents.', true),
-('Emily Rodriguez', 5, 'Very happy with the care our twins receive. Clean facility and engaging educational programs.', true),
-('David Smith', 5, 'Outstanding childcare! The teachers are patient and create a loving environment for all the children.', false);
+-- Add all website images for Mariana to manage
+INSERT INTO images (name, url, alt_text) VALUES
+-- Logo and Branding
+('Little Angels Logo', '/logo.svg', 'Little Angels Childcare logo'),
 
+-- Angel Graphics
+('Angel Graphic 1', '/angel-1.png', 'Angel illustration'),
+('Angel Graphic 2', '/angel-2.png', 'Angel illustration for contact'),
+('Angel Graphic 3', '/angel-3.png', 'Angel illustration'),
+
+-- Homepage Carousel Banners
+('Banner 2', '/banner-2.png', 'Little Angels childcare banner'),
+('Banner 3', '/banner-3.png', 'Little Angels childcare banner'),
+('Banner 4', '/banner-4.JPEG', 'Little Angels childcare banner'),
+('Banner 5', '/banner-5.JPEG', 'Little Angels childcare banner'),
+('Banner 6', '/banner-6.JPEG', 'Little Angels childcare banner'),
+
+-- Core Values (Homepage)
+('Core Value 1', '/core-value-1.png', 'Core value icon'),
+('Core Value 2', '/core-value-2.png', 'Core value icon'),
+('Core Value 3', '/core-value-3.png', 'Core value icon'),
+
+-- About/Mission Section
+('Our Mission Banner', '/our-mission.png', 'Our mission at Little Angels'),
+('Mission Image 1', '/mission-1.png', 'Children playing and learning'),
+('Mission Image 2', '/mission-2.png', 'Our philosophy in action'), 
+('Mission Image 3', '/mission-3.png', 'Our nurturing environment'),
+('Team Photo - Mariana', '/mission-4.png', 'Mariana Ricci, founder and director'),
+
+-- Philosophy Page
+('Philosophy Activity 1', '/philosophy-1.JPEG', 'Kids playing and learning outdoors'),
+('Philosophy Activity 2', '/philosophy-2.JPEG', 'Children engaged in creative play'),
+('Philosophy Activity 3', '/philosophy-3.JPEG', 'Outdoor physical activities'),
+
+-- Meals Page
+('Healthy Meals', '/fruits.jpg', 'Fresh organic fruits and vegetables'),
+
+-- Brightweel Page
+('Brightwheel App', '/brightweel.png', 'Brightwheel app interface'),
+
+-- Weekend Page
+('Weekend Activities', '/weekend.JPEG', 'Weekend program activities'),
+
+-- Background Images
+('Cloud Background Blue', '/bg-cloud-blue.jpg', 'Blue cloud background for subpage titles'),
+
+-- Gallery Images
+('Gallery Image 1', '/gallery/gallery-1.png', 'Little Angels gallery photo'),
+('Gallery Image 2', '/gallery/gallery-2.png', 'Little Angels gallery photo'),
+('Gallery Image 3', '/gallery/gallery-3.png', 'Little Angels gallery photo'),
+('Gallery Image 4', '/gallery/gallery-4.png', 'Little Angels gallery photo'),
+('Gallery Image 5', '/gallery/gallery-5.png', 'Little Angels gallery photo'),
+('Gallery Image 6', '/gallery/gallery-6.png', 'Little Angels gallery photo'),
+('Gallery Image 7', '/gallery/gallery-7.png', 'Little Angels gallery photo'),
+('Gallery Image 8', '/gallery/gallery-8.png', 'Little Angels gallery photo'),
+('Gallery Image 9', '/gallery/gallery-9.png', 'Little Angels gallery photo'),
+('Gallery Image 10', '/gallery/gallery-10.png', 'Little Angels gallery photo'),
+('Gallery Image 11', '/gallery/gallery-11.png', 'Little Angels gallery photo'),
+('Gallery Image 12', '/gallery/gallery-12.png', 'Little Angels gallery photo');
+
+-- Add some sample reviews for Mariana to manage
+INSERT INTO reviews (author_name, rating, text, visible) VALUES
+('Sarah Johnson', 5, 'Little Angels has been amazing for our daughter. The bilingual environment and play-based learning approach have helped her grow so much. Mariana and her team truly care about each child.', true),
+('Mike Chen', 5, 'We love the organic meals and the garden program. Our son comes home excited about what he learned every day. The staff is incredibly nurturing and professional.', true),
+('Lisa Rodriguez', 4, 'Great childcare center with a wonderful philosophy. The outdoor activities and creative play have been perfect for our toddler. Highly recommend!', true),
+('Emma Wilson', 5, 'Mariana has created such a warm and welcoming environment. Our child has thrived here both socially and academically. The bilingual program is a huge bonus!', false);

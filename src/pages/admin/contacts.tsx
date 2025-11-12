@@ -101,6 +101,24 @@ const ContactsPage: React.FC<ContactsPageProps> = ({ initialContacts }) => {
               Logout
             </button>
             <button
+              onClick={() => router.push('/admin/images')}
+              className="bg-white text-baby-blue p-2 rounded"
+            >
+              Images
+            </button>
+            <button
+              onClick={() => router.push('/admin/content')}
+              className="bg-white text-baby-blue p-2 rounded"
+            >
+              Content
+            </button>
+            <button
+              onClick={() => router.push('/admin/reviews')}
+              className="bg-white text-baby-blue p-2 rounded"
+            >
+              Reviews
+            </button>
+            <button
               onClick={handleRefresh}
               className="bg-white text-baby-blue p-2 rounded"
             >

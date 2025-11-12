@@ -62,6 +62,10 @@ git pull origin main || {
 
 echo -e "${GREEN}✓ Code updated successfully${NC}"
 
+# Clean node_modules and package-lock to ensure fresh install
+echo -e "${YELLOW}Cleaning node_modules...${NC}"
+rm -rf node_modules package-lock.json
+
 # Build application on host (outside Docker to avoid SIGBUS)
 echo -e "${YELLOW}Building application on host...${NC}"
 npm install || {

@@ -20,6 +20,7 @@ const ImagesPage: React.FC = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingImage, setEditingImage] = useState<Image | null>(null);
+  const [editingFile, setEditingFile] = useState<File | null>(null);
   const [uploadForm, setUploadForm] = useState({
     name: '',
     altText: '',
@@ -92,6 +93,11 @@ const ImagesPage: React.FC = () => {
       const formData = new FormData();
       formData.append('name', editingImage.name);
       formData.append('altText', editingImage.alt_text || '');
+      
+      // Add the new file if one was selected
+      if (editingFile) {
+        formData.append('image', editingFile);
+      }
 
       const res = await fetch(`/api/images?id=${editingImage.id}`, {
         method: 'PUT',
@@ -101,6 +107,7 @@ const ImagesPage: React.FC = () => {
       if (res.ok) {
         setShowEditModal(false);
         setEditingImage(null);
+        setEditingFile(null);
         fetchImages();
       } else {
         const error = await res.json();
@@ -118,6 +125,7 @@ const ImagesPage: React.FC = () => {
 
   const openEditModal = (image: Image) => {
     setEditingImage({ ...image });
+    setEditingFile(null);
     setShowEditModal(true);
   };
 
@@ -306,6 +314,18 @@ const ImagesPage: React.FC = () => {
                   alt={editingImage.alt_text || editingImage.name}
                   className="w-full h-full object-cover"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Replace Image (optional)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setEditingFile(e.target.files?.[0] || null)}
+                  className="w-full p-2 border rounded"
+                />
+                {editingFile && (
+                  <p className="text-xs text-green-600 mt-1">New file selected: {editingFile.name}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Name *</label>

@@ -62,20 +62,6 @@ git pull origin main || {
 
 echo -e "${GREEN}✓ Code updated successfully${NC}"
 
-# Install dependencies
-echo -e "${YELLOW}Installing dependencies...${NC}"
-npm install || {
-    echo -e "${RED}Error: npm install failed${NC}"
-    exit 1
-}
-
-# Build the application
-echo -e "${YELLOW}Building application...${NC}"
-npm run build || {
-    echo -e "${RED}Error: Build failed${NC}"
-    exit 1
-}
-
 # Restart services
 echo -e "${YELLOW}Restarting services...${NC}"
 if [ -f "${PROJECT_DIR}/docker-compose.yml" ]; then

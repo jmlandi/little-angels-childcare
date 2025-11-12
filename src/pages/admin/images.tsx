@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { readCookie, verifyToken } from '@infrastructure/auth';
-import { Edit2, Eye, X } from 'lucide-react';
+import { Edit2, Eye, X, Plus } from 'lucide-react';
 
 interface Image {
   id: string;
@@ -129,30 +129,41 @@ const ImagesPage: React.FC = () => {
             <button
               onClick={handleLogout}
               className="bg-white text-baby-blue p-2 rounded"
+              style={{ backgroundColor: '#ffffff', color: '#81CAEA' }}
             >
               Logout
             </button>
             <button
               onClick={() => router.push('/admin/contacts')}
               className="bg-white text-baby-blue p-2 rounded"
+              style={{ backgroundColor: '#ffffff', color: '#81CAEA' }}
             >
               Contacts
             </button>
             <button
               onClick={() => router.push('/admin/content')}
               className="bg-white text-baby-blue p-2 rounded"
+              style={{ backgroundColor: '#ffffff', color: '#81CAEA' }}
             >
               Content
             </button>
             <button
               onClick={() => router.push('/admin/reviews')}
               className="bg-white text-baby-blue p-2 rounded"
+              style={{ backgroundColor: '#ffffff', color: '#81CAEA' }}
             >
               Reviews
             </button>
           </div>
 
-
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="bg-green-500 text-white p-2 rounded flex items-center gap-2"
+            style={{ backgroundColor: '#10b981', color: '#ffffff' }}
+          >
+            <Plus size={16} />
+            Upload Image
+          </button>
         </div>
 
         <h1 className="text-2xl font-bold text-center">Edit Images</h1>
@@ -184,15 +195,17 @@ const ImagesPage: React.FC = () => {
                 <button
                   onClick={() => window.open(image.url, '_blank')}
                   className="flex-1 bg-blue-500 text-white p-1 rounded text-xs flex items-center justify-center gap-1"
+                  style={{ backgroundColor: '#3b82f6', color: '#ffffff' }}
                 >
-                  <Eye size={12} style={{ color: 'white !important' }} />
+                  <Eye size={12} />
                   View
                 </button>
                 <button
                   onClick={() => openEditModal(image)}
                   className="flex-1 bg-yellow-500 text-white p-1 rounded text-xs flex items-center justify-center gap-1"
+                  style={{ backgroundColor: '#f59e0b', color: '#ffffff' }}
                 >
-                  <Edit2 size={12} style={{ color: 'white !important' }} />
+                  <Edit2 size={12} />
                   Edit
                 </button>
 
@@ -218,7 +231,7 @@ const ImagesPage: React.FC = () => {
                 onClick={() => setShowUploadModal(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <X size={20} style={{ color: '#6b7280 !important' }} />
+                <X size={20} />
               </button>
             </div>
             <form onSubmit={handleUpload} className="space-y-4">
@@ -283,7 +296,7 @@ const ImagesPage: React.FC = () => {
                 onClick={() => setShowEditModal(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <X size={20} style={{ color: '#6b7280 !important' }} />
+                <X size={20} />
               </button>
             </div>
             <form onSubmit={handleEdit} className="space-y-4">

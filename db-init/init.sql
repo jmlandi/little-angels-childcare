@@ -146,10 +146,10 @@ INSERT INTO site_content (section, key, value) VALUES
 ('enrollments', 'button_text', 'Schedule a tour'),
 ('enrollments', 'offer_title', 'Offer');
 
--- Insert some sample reviews
-INSERT INTO reviews (author_name, rating, text, visible) VALUES
-('Sarah Johnson', 5, 'Amazing childcare center! My daughter loves going there every day. The staff is incredibly caring and professional.', true),
-('Mike Chen', 5, 'Little Angels has been wonderful for our son. Great activities, nutritious meals, and excellent communication with parents.', true),
-('Emily Rodriguez', 5, 'Very happy with the care our twins receive. Clean facility and engaging educational programs.', true),
-('David Smith', 5, 'Outstanding childcare! The teachers are patient and create a loving environment for all the children.', false);
+-- -- Insert some sample reviews
+-- INSERT INTO reviews (author_name, rating, text, visible) VALUES
+-- ('Sarah Johnson', 5, 'Amazing childcare center! My daughter loves going there every day. The staff is incredibly caring and professional.', true),
+-- ('Mike Chen', 5, 'Little Angels has been wonderful for our son. Great activities, nutritious meals, and excellent communication with parents.', true),
+-- ('Emily Rodriguez', 5, 'Very happy with the care our twins receive. Clean facility and engaging educational programs.', true),
+-- ('David Smith', 5, 'Outstanding childcare! The teachers are patient and create a loving environment for all the children.', false);
 
